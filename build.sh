@@ -21,17 +21,11 @@ for VERSION in ${VERSIONS} ; do \
   fi
 
 #hacked image builder
-  if docker_tag_exists chrisns/emq ${VERSION}-hacked; then
-    echo ${VERSION}-hacked already exists
-  else
-    echo ${VERSION}-hacked does not yet exist
     echo "FROM chrisns/emq:${VERSION}" > emq-docker-master/Dockerfile.patched-hacked
     echo "COPY hacked-start.sh /opt/emqttd/" >> emq-docker-master/Dockerfile.patched-hacked
     echo "RUN chmod +x /opt/emqttd/hacked-start.sh" >> emq-docker-master/Dockerfile.patched-hacked
     echo "CMD /opt/emqttd/hacked-start.sh" >> emq-docker-master/Dockerfile.patched-hacked
     docker build -t chrisns/emq:${VERSION}-hacked -f emq-docker-master/Dockerfile.patched-hacked emq-docker-master
     docker push chrisns/emq:${VERSION}-hacked
-  fi
-
 
 done
