@@ -19,7 +19,7 @@ for VERSION in ${VERSIONS} ; do \
   else
     echo ${VERSION} does not yet exist
     docker build -t chrisns/emq:${VERSION} --build-arg EMQ_VERSION=${VERSION} -f emq_docker/Dockerfile.patched emq_docker
-    echo docker push chrisns/emq:${VERSION}
+    docker push chrisns/emq:${VERSION}
   fi
 done
 
