@@ -25,7 +25,7 @@ for VERSION in ${VERSIONS} ; do \
   if docker_tag_exists chrisns/emq ${VERSION}-hacked; then
     echo ${VERSION}-hacked already exists
   else
-    echo ${VERSION} does not yet exist
+    echo ${VERSION}-hacked does not yet exist
     docker build -t chrisns/emq:${VERSION}-hacked --build-arg EMQ_VERSION=${VERSION} -f emq-docker-master/Dockerfile.patched-hacked emq-docker-master
     docker push chrisns/emq:${VERSION}-hacked
   fi
