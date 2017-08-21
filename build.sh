@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-VERSIONS=$(git ls-remote --tags https://github.com/emqtt/emq-relx.git | awk  '{ print $2 }' | sed 's/refs\/tags\///g' | sed 's/\^{}//g' | uniq)
+VERSIONS=$(git ls-remote --tags https://github.com/emqtt/emq-relx.git | awk  '{ print $2 }' | sed 's/refs\/tags\///g' | sed 's/\^{}//g' | uniq | rev)
 
 cat emq-docker-master/Dockerfile | sed 's/ENV EMQ_VERSION/ARG EMQ_VERSION/g' > emq-docker-master/Dockerfile.patched
 
@@ -26,6 +26,9 @@ for VERSION in ${VERSIONS} ; do \
     echo ${VERSION}-hacked already exists
   else
     echo ${VERSION}-hacked does not yet exist
+    echo "FROM chrisns/emq:${VERSION}" > emq-docker-master/Dockerfile.patched-hacked
+    echo "COPY ../hacked-start.sh /opt/emqttd/" >> emq-docker-master/Dockerfile.patched-hacked
+    echo "CMD /opt/emqttd/hacked-start.sh" >> emq-docker-master/Dockerfile.patched-hacked
     docker build -t chrisns/emq:${VERSION}-hacked --build-arg EMQ_VERSION=${VERSION} -f emq-docker-master/Dockerfile.patched-hacked emq-docker-master
     docker push chrisns/emq:${VERSION}-hacked
   fi
