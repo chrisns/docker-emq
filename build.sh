@@ -2,9 +2,7 @@
 
 VERSIONS=$(git ls-remote --tags git@github.com:emqtt/emq-relx.git | awk  '{ print $2 }' | sed 's/refs\/tags\///g' | sed 's/\^{}//g' | uniq)
 
-git clone -b master https://github.com/emqtt/emq_docker.git
-
-cat emq_docker/Dockerfile | sed 's/ENV EMQ_VERSION/ARG EMQ_VERSION/g' > emq_docker/Dockerfile.patched
+cat emq-docker-master/Dockerfile | sed 's/ENV EMQ_VERSION/ARG EMQ_VERSION/g' > emq-docker-master/Dockerfile.patched
 
 
 function docker_tag_exists() {
@@ -18,7 +16,7 @@ for VERSION in ${VERSIONS} ; do \
     echo ${VERSION} already exists
   else
     echo ${VERSION} does not yet exist
-    docker build -t chrisns/emq:${VERSION} --build-arg EMQ_VERSION=${VERSION} -f emq_docker/Dockerfile.patched emq_docker
+    docker build -t chrisns/emq:${VERSION} --build-arg EMQ_VERSION=${VERSION} -f emq-docker-master/Dockerfile.patched emq-docker-master
     docker push chrisns/emq:${VERSION}
   fi
 done

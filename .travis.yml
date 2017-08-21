@@ -3,6 +3,10 @@ sudo: required
 services:
   - docker
 
+before_script:
+  - wget https://github.com/emqtt/emq_docker/archive/master.tar.gz -O /tmp/emqtt.tar.gz
+  - tar -xvf /tmp/emqtt.tar.gz
+
 script:
   - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
   - ./build.sh
