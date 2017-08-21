@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
 export EMQ_HOST=$(ip route get $(getent hosts ${EMQ_CLUSTER__DNS__NAME} | awk '{print $1}') | awk '{print $NF}')
 echo Using $EMQ_HOST
